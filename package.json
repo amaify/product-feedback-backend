@@ -1,0 +1,24 @@
+{
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"connect-mongodb-session": "^3.1.1",
+		"express": "^4.17.3",
+		"express-session": "^1.17.3",
+		"googleapis": "^100.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"lodash": "^4.17.21",
+		"mongoose": "^6.2.6",
+		"nodemon": "^2.0.15",
+		"validator": "^13.7.0"
+	},
+	"name": "product-feedback-app",
+	"version": "1.0.0",
+	"description": "API for the frontend webapp",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon app.js"
+	},
+	"author": "Tobechukwu Ugwuanyi",
+	"license": "ISC"
+}
