@@ -12,8 +12,8 @@ exports.newComment = async (req, res, next) => {
 			.json({ message: "Comment can't be empty!", statusCode: 401 });
 	}
 
-	const user = await Users.findById("62854811f0688cad42853587");
-	const productFeedback = await Feedback.findById("62854b3d9de75f347d688557");
+	const user = await Users.findById(req.userId);
+	const productFeedback = await Feedback.findById(req.params.productFeedbackId);
 
 	if (!user) {
 		return res.status(401).json({ message: "Not Authorized", statusCode: 401 });
@@ -34,6 +34,7 @@ exports.newComment = async (req, res, next) => {
 	const createdComment = new Comment({
 		id: id,
 		content: content,
+		productFeedback: productFeedback._id.toString(),
 		creator: user._id.toString(),
 	});
 
@@ -52,9 +53,12 @@ exports.newComment = async (req, res, next) => {
 };
 
 exports.getComments = async (req, res, next) => {
-	const comments = await Comment.find();
+	const products = await Feedback.findById(req.params.productFeedbackId);
+	const comments = await Comment.find({
+		productFeedback: { $eq: products._id },
+	});
 
-	if (!comments) {
+	if (!comments.length > 0) {
 		return res.status(200).json({ message: "No Comments!", statusCode: 200 });
 	}
 

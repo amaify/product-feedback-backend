@@ -11,6 +11,18 @@ const commentSchema = new Schema({
 		required: true,
 	},
 
+	replies: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "Replies",
+		},
+	],
+
+	productFeedback: {
+		type: Schema.Types.ObjectId,
+		ref: "productFeedback",
+	},
+
 	creator: {
 		type: Schema.Types.ObjectId,
 		ref: "User",

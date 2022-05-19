@@ -25,7 +25,7 @@ exports.newFeedback = async (req, res, next) => {
 		id = productReqs.length + 1;
 	}
 
-	const user = await User.findById("62854811f0688cad42853587");
+	const user = await User.findById(req.userId);
 
 	if (!user) {
 		return res.status(401).json({ message: "Not Authorized", statusCode: 401 });
@@ -60,13 +60,13 @@ exports.newFeedback = async (req, res, next) => {
 	});
 };
 
-exports.getProductFeedbacks = async (req, res, next) => {
+exports.getAllFeedback = async (req, res, next) => {
 	const products = await Feedback.find();
-	const user = await User.findById("62851fa373514ba95bcde021");
+	// const user = await User.findById(req.userId);
 
-	const filterinvoice = await Feedback.findOne({ creator: { $eq: user } });
+	// const filteredFeedbacks = await Feedback.findOne({ creator: { $eq: user } });
 
-	console.log(filterinvoice);
+	// console.log(filteredFeedbacks);
 
 	if (!products) {
 		return res.status(200).json({
@@ -76,4 +76,16 @@ exports.getProductFeedbacks = async (req, res, next) => {
 	}
 
 	return res.status(200).json({ data: products, statusCode: 200 });
+};
+
+exports.getOneFeedback = async (req, res, next) => {
+	const product = await Feedback.findOne({ _id: req.params.productFeedbackId });
+
+	if (!product) {
+		return res
+			.status(401)
+			.json({ message: "Product Feedback does not exist!", statusCode: 401 });
+	}
+
+	return res.status(200).json({ data: product, statusCode: 200 });
 };

@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const isAuth = require("./middleware/isAuth");
 
 const authRoutes = require("./routes/authentication");
 const feedbackRoutes = require("./routes/feedback");
@@ -9,6 +10,8 @@ const app = express();
 const MONGODB_URI = `mongodb+srv://amaify:Flowers12%40@product-feedback.zh3f0.mongodb.net/productFeedback?retryWrites=true&w=majority`;
 
 app.use(express.json());
+
+app.use(isAuth);
 
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
@@ -22,6 +25,8 @@ app.use((req, res, next) => {
 	}
 	next();
 });
+
+app.use(isAuth);
 
 app.use("/auth", authRoutes);
 app.use("/feedback", feedbackRoutes);

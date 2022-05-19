@@ -90,6 +90,7 @@ exports.login = async (req, res, next) => {
 		token: token,
 		fullName: user.name,
 		userName: user.userName,
+		userId: user._id.toString(),
 	});
 };
 
@@ -104,7 +105,7 @@ exports.forgotPassword = async (req, res, next) => {
 			.json({ message: "User does not exist!", statusCode: 401 });
 	}
 
-	const resetToken = jwt.sign({ _id: user._id }, "resetSecret", {
+	const resetToken = jwt.sign({ _id: user._id }, "secret", {
 		expiresIn: "1h",
 	});
 
