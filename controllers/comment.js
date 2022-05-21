@@ -36,6 +36,8 @@ exports.newComment = async (req, res, next) => {
 		content: content,
 		productFeedback: productFeedback._id.toString(),
 		creator: user._id.toString(),
+		creatorName: user.name,
+		creatorUsername: user.userName,
 	});
 
 	const savedComment = await createdComment.save();
@@ -54,13 +56,33 @@ exports.newComment = async (req, res, next) => {
 
 exports.getComments = async (req, res, next) => {
 	const products = await Feedback.findById(req.params.productFeedbackId);
+
+	if (!products) {
+		return res
+			.status(401)
+			.json({ message: "Feedback does not exist!", statusCode: 401 });
+	}
+
 	const comments = await Comment.find({
 		productFeedback: { $eq: products._id },
 	});
+
+	// const getIndividualComment = comments.map((comment) =>
+	// 	comment.creator.toString()
+	// );
+
+	// const commentCreator = await Users.find({
+	// 	_id: getIndividualComment.map((id) => id),
+	// });
+
+	// console.log(commentCreator);
 
 	if (!comments.length > 0) {
 		return res.status(200).json({ message: "No Comments!", statusCode: 200 });
 	}
 
-	return res.status(200).json({ data: comments, statusCode: 200 });
+	return res.status(200).json({
+		data: comments,
+		statusCode: 200,
+	});
 };

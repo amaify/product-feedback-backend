@@ -18,6 +18,14 @@ const commentSchema = new Schema({
 		},
 	],
 
+	creatorName: {
+		type: String,
+	},
+
+	creatorUsername: {
+		type: String,
+	},
+
 	productFeedback: {
 		type: Schema.Types.ObjectId,
 		ref: "productFeedback",

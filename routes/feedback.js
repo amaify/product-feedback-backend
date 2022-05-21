@@ -13,5 +13,6 @@ router.get(
 	feedbackController.getOneFeedback
 );
 router.get("/comments/:productFeedbackId", commentController.getComments);
+router.get("/commentReply", replyController.getReplies);
 
 module.exports = router;

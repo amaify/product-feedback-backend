@@ -11,6 +11,14 @@ const replySchema = new Schema({
 		type: String,
 	},
 
+	creatorName: {
+		type: String,
+	},
+
+	creatorUsername: {
+		type: String,
+	},
+
 	linkedComment: {
 		type: Schema.Types.ObjectId,
 		ref: "Comments",
