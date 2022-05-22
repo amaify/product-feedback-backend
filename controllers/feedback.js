@@ -89,3 +89,38 @@ exports.getOneFeedback = async (req, res, next) => {
 
 	return res.status(200).json({ data: product, statusCode: 200 });
 };
+
+exports.incrementUpvotes = async (req, res, next) => {
+	const productFeedbackId = req.params.productFeedbackId;
+	const product = await Feedback.find({ _id: { $eq: productFeedbackId } });
+
+	if (!product) {
+		return res
+			.status(401)
+			.json({ message: "Product Feedback does not exist", statusCode: 401 });
+	}
+
+	let upvoteCount = req.body.upvotes;
+
+	let updatedFeedbackUpvote = new Feedback({
+		_id: productFeedbackId,
+		upvotes: upvoteCount,
+	});
+
+	const upvoteUpdate = await Feedback.updateOne(
+		{ _id: productFeedbackId },
+		updatedFeedbackUpvote
+	);
+
+	if (!upvoteUpdate) {
+		return res
+			.status(401)
+			.json({ message: "Upvoting failed!", statusCode: 401 });
+	}
+
+	console.log(upvoteCount);
+
+	return res
+		.status(201)
+		.json({ message: "Upvoting Successful", statusCode: 201 });
+};

@@ -15,4 +15,6 @@ router.get(
 router.get("/comments/:productFeedbackId", commentController.getComments);
 router.get("/commentReply", replyController.getReplies);
 
+router.put("/upvoting/:productFeedbackId", feedbackController.incrementUpvotes);
+
 module.exports = router;
