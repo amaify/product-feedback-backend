@@ -42,7 +42,7 @@ exports.createUser = async (req, res, next) => {
 
 	return res
 		.status(201)
-		.json({ message: "Registration Successful", statusCode: 201, data: user });
+		.json({ message: "Registration Successful", statusCode: 201 });
 };
 
 exports.login = async (req, res, next) => {

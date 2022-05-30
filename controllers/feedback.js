@@ -14,7 +14,7 @@ exports.newFeedback = async (req, res, next) => {
 		inputValidator.isEmpty(category) ||
 		inputValidator.isEmpty(description)
 	) {
-		return res.status(401).json({ message: "Invalid input", statusCode: 401 });
+		return res.status(400).json({ message: "Invalid input", statusCode: 400 });
 	}
 
 	const productReqs = await Feedback.find();
@@ -96,8 +96,8 @@ exports.incrementUpvotes = async (req, res, next) => {
 
 	if (!product) {
 		return res
-			.status(401)
-			.json({ message: "Product Feedback does not exist", statusCode: 401 });
+			.status(400)
+			.json({ message: "Product Feedback does not exist", statusCode: 400 });
 	}
 
 	let upvoteCount = req.body.upvotes;
@@ -114,13 +114,76 @@ exports.incrementUpvotes = async (req, res, next) => {
 
 	if (!upvoteUpdate) {
 		return res
-			.status(401)
-			.json({ message: "Upvoting failed!", statusCode: 401 });
+			.status(400)
+			.json({ message: "Upvoting failed!", statusCode: 400 });
 	}
-
-	console.log(upvoteCount);
 
 	return res
 		.status(201)
 		.json({ message: "Upvoting Successful", statusCode: 201 });
+};
+
+exports.editFeedback = async (req, res, next) => {
+	const user = await User.findById(req.userId);
+	const editFeedbackId = await Feedback.find({
+		_id: req.params.editFeedbackId,
+	});
+
+	if (!user) {
+		return res
+			.status(401)
+			.json({ message: "Not Authorized, must be logged in", statusCode: 401 });
+	}
+
+	if (!editFeedbackId) {
+		return res
+			.status(400)
+			.json({ message: "Product feedback does not exist!", statusCode: 400 });
+	}
+
+	if (user._id.toString() !== editFeedbackId[0].creator.toString()) {
+		return res.status(401).json({
+			message: "This feedback can only be edited by the creator!",
+			statusCode: 401,
+		});
+	}
+
+	const title = req.body.title;
+	const category = req.body.category;
+	const status = req.body.updateStatus;
+	const description = req.body.description;
+	const upvotes = req.body.upvotes;
+
+	if (
+		inputValidator.isEmpty(title) ||
+		inputValidator.isEmpty(category) ||
+		inputValidator.isEmpty(description)
+	) {
+		return res.status(401).json({ message: "Invalid input", statusCode: 401 });
+	}
+
+	const editedFeedback = new Feedback({
+		_id: editFeedbackId[0]._id,
+		title: title,
+		category: category,
+		status: status,
+		description: description,
+		upvotes: upvotes,
+		comments: editFeedbackId[0].comments,
+	});
+
+	const saveEditedFeedback = await Feedback.updateOne(
+		{ _id: editFeedbackId[0]._id.toString() },
+		editedFeedback
+	);
+
+	if (!saveEditedFeedback) {
+		return res
+			.status(400)
+			.json({ message: "Updated Failed!", statusCode: 400 });
+	}
+
+	return res
+		.status(201)
+		.json({ message: "Update Successful!", statusCode: 201 });
 };

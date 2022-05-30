@@ -12,6 +12,7 @@ router.get(
 	"/product-feedback/:productFeedbackId",
 	feedbackController.getOneFeedback
 );
+router.put("/edit-feedback/:editFeedbackId", feedbackController.editFeedback);
 router.get("/comments/:productFeedbackId", commentController.getComments);
 router.get("/commentReply", replyController.getReplies);
 

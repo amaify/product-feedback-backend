@@ -58,9 +58,9 @@ exports.replyToComment = async (req, res, next) => {
 exports.getReplies = async (req, res, next) => {
 	const commentId = await Comments.find();
 
-	let y = commentId.map((x) => x._id);
+	// let y = commentId.map((x) => x._id);
 
-	console.log(y.toString());
+	// console.log(y.toString());
 
 	if (!commentId) {
 		return res
