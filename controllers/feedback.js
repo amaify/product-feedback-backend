@@ -187,3 +187,40 @@ exports.editFeedback = async (req, res, next) => {
 		.status(201)
 		.json({ message: "Update Successful!", statusCode: 201 });
 };
+
+exports.deleteFeedback = async (req, res, next) => {
+	if (!req.isAuth) {
+		return res.status(400).json({ message: "Not Authorized", statusCode: 400 });
+	}
+
+	const productFeedback = await Feedback.findById(req.params.feedbackId);
+	const user = await User.findById(req.userId);
+
+	if (!productFeedback) {
+		return res
+			.status(400)
+			.json({ message: "Feedback does not exist!", statusCode: 400 });
+	}
+
+	if (!user) {
+		return res
+			.status(400)
+			.json({ message: "Not Authorized to do this!", statusCode: 400 });
+	}
+
+	if (productFeedback.creator.toString() !== user._id.toString()) {
+		return res.status(400).json({
+			message: "Only the creator of this feedback can perform this operation",
+			statusCode: 400,
+		});
+	}
+
+	await Feedback.deleteOne({ _id: productFeedback._id });
+	await user.feedback.pull(productFeedback._id);
+	await user.save();
+
+	return res.status(201).json({
+		message: "Product feedback successfully deleted",
+		statusCode: 201,
+	});
+};
