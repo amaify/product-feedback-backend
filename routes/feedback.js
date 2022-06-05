@@ -6,7 +6,8 @@ const replyController = require("../controllers/replies");
 
 router.post("/new-feedback", feedbackController.newFeedback);
 router.post("/new-comment/:productFeedbackId", commentController.newComment);
-router.post("/replies", replyController.replyToComment);
+router.post("/replies/:commentId", replyController.replyToComment);
+router.post("/reply-reply/:replyId", replyController.replyToReply);
 router.get("/feedbacks", feedbackController.getAllFeedback);
 router.get(
 	"/product-feedback/:productFeedbackId",

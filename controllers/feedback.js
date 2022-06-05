@@ -79,48 +79,60 @@ exports.getAllFeedback = async (req, res, next) => {
 };
 
 exports.getOneFeedback = async (req, res, next) => {
-	const product = await Feedback.findOne({ _id: req.params.productFeedbackId });
+	try {
+		const product = await Feedback.findOne({
+			_id: req.params.productFeedbackId,
+		});
 
-	if (!product) {
-		return res
-			.status(401)
-			.json({ message: "Product Feedback does not exist!", statusCode: 401 });
+		if (!product) {
+			return res
+				.status(401)
+				.json({ message: "Product Feedback does not exist!", statusCode: 401 });
+		}
+
+		return res.status(200).json({ data: product, statusCode: 200 });
+	} catch (error) {
+		console.log(error.message);
+		return res.status(400).json({ message: error.message, statusCode: 400 });
 	}
-
-	return res.status(200).json({ data: product, statusCode: 200 });
 };
 
 exports.incrementUpvotes = async (req, res, next) => {
-	const productFeedbackId = req.params.productFeedbackId;
-	const product = await Feedback.find({ _id: { $eq: productFeedbackId } });
+	try {
+		const productFeedbackId = req.params.productFeedbackId;
+		const product = await Feedback.find({ _id: { $eq: productFeedbackId } });
 
-	if (!product) {
+		if (!product) {
+			return res
+				.status(400)
+				.json({ message: "Product Feedback does not exist", statusCode: 400 });
+		}
+
+		let upvoteCount = req.body.upvotes;
+
+		let updatedFeedbackUpvote = new Feedback({
+			_id: productFeedbackId,
+			upvotes: upvoteCount,
+		});
+
+		const upvoteUpdate = await Feedback.updateOne(
+			{ _id: productFeedbackId },
+			updatedFeedbackUpvote
+		);
+
+		if (!upvoteUpdate) {
+			return res
+				.status(400)
+				.json({ message: "Upvoting failed!", statusCode: 400 });
+		}
+
 		return res
-			.status(400)
-			.json({ message: "Product Feedback does not exist", statusCode: 400 });
+			.status(201)
+			.json({ message: "Upvoting Successful", statusCode: 201 });
+	} catch (error) {
+		console.log(error.message);
+		return res.status(400).json({ message: error.message, statusCode: 400 });
 	}
-
-	let upvoteCount = req.body.upvotes;
-
-	let updatedFeedbackUpvote = new Feedback({
-		_id: productFeedbackId,
-		upvotes: upvoteCount,
-	});
-
-	const upvoteUpdate = await Feedback.updateOne(
-		{ _id: productFeedbackId },
-		updatedFeedbackUpvote
-	);
-
-	if (!upvoteUpdate) {
-		return res
-			.status(400)
-			.json({ message: "Upvoting failed!", statusCode: 400 });
-	}
-
-	return res
-		.status(201)
-		.json({ message: "Upvoting Successful", statusCode: 201 });
 };
 
 exports.editFeedback = async (req, res, next) => {
