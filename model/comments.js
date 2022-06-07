@@ -26,6 +26,10 @@ const commentSchema = new Schema({
 		type: String,
 	},
 
+	creatorAvatar: {
+		type: String,
+	},
+
 	productFeedback: {
 		type: Schema.Types.ObjectId,
 		ref: "productFeedback",

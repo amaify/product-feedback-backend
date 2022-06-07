@@ -45,6 +45,7 @@ exports.newComment = async (req, res, next) => {
 			creator: user._id.toString(),
 			creatorName: user.name,
 			creatorUsername: user.userName,
+			creatorAvatar: user.avatar,
 		});
 
 		const savedComment = await createdComment.save();

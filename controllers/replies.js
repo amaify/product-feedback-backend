@@ -44,6 +44,7 @@ exports.replyToComment = async (req, res, next) => {
 			replyingTo: commentCreator.userName,
 			creatorName: user.name,
 			creatorUsername: user.userName,
+			creatorAvatar: user.avatar,
 			creator: user._id.toString(),
 			linkedComment: comment._id.toString(),
 		});
@@ -107,6 +108,7 @@ exports.replyToReply = async (req, res, next) => {
 			replyingTo: replierCreator.userName,
 			creatorName: user.name,
 			creatorUsername: user.userName,
+			creatorAvatar: user.avatar,
 			creator: user._id.toString(),
 			linkedComment: comment._id.toString(),
 		});

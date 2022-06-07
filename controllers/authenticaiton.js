@@ -4,12 +4,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.createUser = async (req, res, next) => {
-	const userName = req.body.userName;
-	const name = req.body.name;
-	const email = req.body.email;
-	const password = req.body.password;
+	// const userName = req.body.userName;
+	// const name = req.body.name;
+	// const email = req.body.email;
+	// const password = req.body.password;
+
+	const { userName, name, email, password } = req.body;
 
 	const existingUser = await User.findOne({ email: email });
+
+	const avatar = `https://avatars.dicebear.com/api/micah/${userName}.svg?background=%231B8968`;
 
 	if (existingUser) {
 		return res
@@ -35,6 +39,7 @@ exports.createUser = async (req, res, next) => {
 		name: name,
 		email: email,
 		userName: userName,
+		avatar: avatar,
 		password: hashedPassword,
 	});
 
@@ -46,8 +51,10 @@ exports.createUser = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-	const email = req.body.email;
-	const password = req.body.password;
+	// const email = req.body.email;
+	// const password = req.body.password;
+
+	const { email, password } = req.body;
 
 	const user = await User.findOne({ email: email });
 
@@ -90,6 +97,7 @@ exports.login = async (req, res, next) => {
 		token: token,
 		fullName: user.name,
 		userName: user.userName,
+		avatar: user.avatar,
 		userId: user._id.toString(),
 	});
 };

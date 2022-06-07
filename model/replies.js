@@ -19,6 +19,10 @@ const replySchema = new Schema({
 		type: String,
 	},
 
+	creatorAvatar: {
+		type: String,
+	},
+
 	linkedComment: {
 		type: Schema.Types.ObjectId,
 		ref: "Comments",
