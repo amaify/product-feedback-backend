@@ -6,6 +6,7 @@ const inputValidator = require("validator");
 exports.replyToComment = async (req, res, next) => {
 	try {
 		const content = req.body.content;
+		const { prodId, commentId } = req.params;
 
 		if (
 			inputValidator.isEmpty(content) ||
@@ -16,7 +17,7 @@ exports.replyToComment = async (req, res, next) => {
 				.json({ message: "Input is not valid", statusCode: 401 });
 		}
 
-		const comment = await Comments.findById(req.params.commentId);
+		const comment = await Comments.findById(commentId);
 		const user = await User.findById(req.userId);
 
 		if (!comment) {
@@ -47,6 +48,7 @@ exports.replyToComment = async (req, res, next) => {
 			creatorAvatar: user.avatar,
 			creator: user._id.toString(),
 			linkedComment: comment._id.toString(),
+			productFeedback: prodId,
 		});
 
 		await createReply.save();
@@ -68,6 +70,8 @@ exports.replyToReply = async (req, res, next) => {
 	try {
 		const content = req.body.content;
 
+		const { prodId, replyId } = req.params;
+
 		if (
 			inputValidator.isEmpty(content) ||
 			!inputValidator.isLength(content, { min: 5 })
@@ -77,7 +81,7 @@ exports.replyToReply = async (req, res, next) => {
 				.json({ message: "Input is not valid", statusCode: 401 });
 		}
 
-		const reply = await Replies.findById(req.params.replyId);
+		const reply = await Replies.findById(replyId);
 		const user = await User.findById(req.userId);
 
 		if (!reply) {
@@ -111,6 +115,7 @@ exports.replyToReply = async (req, res, next) => {
 			creatorAvatar: user.avatar,
 			creator: user._id.toString(),
 			linkedComment: comment._id.toString(),
+			productFeedback: prodId,
 		});
 
 		await createReply.save();
@@ -131,6 +136,7 @@ exports.replyToReply = async (req, res, next) => {
 exports.getReplies = async (req, res, next) => {
 	try {
 		const commentId = await Comments.find();
+		const paramId = req.params.prodId;
 
 		if (!commentId) {
 			return res
@@ -148,7 +154,11 @@ exports.getReplies = async (req, res, next) => {
 				.json({ message: "Replies does not exist", statusCode: 401 });
 		}
 
-		return res.status(200).json({ data: replies, statusCode: 200 });
+		const filteredReplies = replies.filter(
+			(reply) => reply.productFeedback.toString() === paramId.toString()
+		);
+
+		return res.status(200).json({ data: filteredReplies, statusCode: 200 });
 	} catch (error) {
 		console.log(error.message);
 		return res.status(400).json({ message: error.message, statusCode: 400 });

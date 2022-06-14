@@ -7,8 +7,6 @@ exports.newComment = async (req, res, next) => {
 	try {
 		const content = req.body.content;
 
-		console.log(content);
-
 		if (inputValidator.isEmpty(content)) {
 			return res
 				.status(401)

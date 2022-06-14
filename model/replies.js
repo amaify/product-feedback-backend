@@ -28,6 +28,11 @@ const replySchema = new Schema({
 		ref: "Comments",
 	},
 
+	productFeedback: {
+		type: Schema.Types.ObjectId,
+		ref: "productFeedback",
+	},
+
 	creator: {
 		type: Schema.Types.ObjectId,
 		ref: "User",

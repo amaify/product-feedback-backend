@@ -6,8 +6,8 @@ const replyController = require("../controllers/replies");
 
 router.post("/new-feedback", feedbackController.newFeedback);
 router.post("/new-comment/:productFeedbackId", commentController.newComment);
-router.post("/replies/:commentId", replyController.replyToComment);
-router.post("/reply-reply/:replyId", replyController.replyToReply);
+router.post("/replies/:prodId/:commentId", replyController.replyToComment);
+router.post("/reply-reply/:prodId/:replyId", replyController.replyToReply);
 router.get("/feedbacks", feedbackController.getAllFeedback);
 router.get(
 	"/product-feedback/:productFeedbackId",
@@ -15,7 +15,7 @@ router.get(
 );
 router.put("/edit-feedback/:editFeedbackId", feedbackController.editFeedback);
 router.get("/comments/:productFeedbackId", commentController.getComments);
-router.get("/commentReply", replyController.getReplies);
+router.get("/commentReply/:prodId", replyController.getReplies);
 
 router.put("/upvoting/:productFeedbackId", feedbackController.incrementUpvotes);
 router.delete(
