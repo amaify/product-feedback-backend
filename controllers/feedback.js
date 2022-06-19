@@ -99,16 +99,22 @@ exports.getOneFeedback = async (req, res, next) => {
 
 exports.incrementUpvotes = async (req, res, next) => {
 	try {
+		if (!req.isAuth) {
+			return res
+				.status(401)
+				.json({ message: "Not Authorized", statusCode: 401 });
+		}
+
 		const productFeedbackId = req.params.productFeedbackId;
 		const product = await Feedback.find({ _id: { $eq: productFeedbackId } });
 
-		if (!product) {
+		if (Array.isArray(product) && !product.length) {
 			return res
 				.status(400)
 				.json({ message: "Product Feedback does not exist", statusCode: 400 });
 		}
 
-		let upvoteCount = req.body.upvotes;
+		const upvoteCount = product[0].upvotes + 1;
 
 		let updatedFeedbackUpvote = new Feedback({
 			_id: productFeedbackId,
@@ -128,7 +134,7 @@ exports.incrementUpvotes = async (req, res, next) => {
 
 		return res
 			.status(201)
-			.json({ message: "Upvoting Successful", statusCode: 201 });
+			.json({ data: updatedFeedbackUpvote, statusCode: 201 });
 	} catch (error) {
 		console.log(error.message);
 		return res.status(400).json({ message: error.message, statusCode: 400 });
