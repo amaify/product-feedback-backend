@@ -116,14 +116,16 @@ exports.incrementUpvotes = async (req, res, next) => {
 
 		const upvoteCount = product[0].upvotes + 1;
 
-		let updatedFeedbackUpvote = new Feedback({
+		const updatedFeedbackUpvote = new Feedback({
 			_id: productFeedbackId,
 			upvotes: upvoteCount,
 		});
 
 		const upvoteUpdate = await Feedback.updateOne(
 			{ _id: productFeedbackId },
-			updatedFeedbackUpvote
+			{
+				upvotes: upvoteCount,
+			}
 		);
 
 		if (!upvoteUpdate) {
