@@ -32,23 +32,6 @@ const feedbackSchema = new Schema({
 		required: true,
 	},
 
-	// comments: [
-	// 	{
-	// 		id: {
-	// 			type: Number,
-	// 		},
-
-	// 		content: {
-	// 			type: String,
-	// 		},
-
-	// 		createdBy: {
-	// 			type: Schema.Types.ObjectId,
-	// 			ref: "User",
-	// 		},
-	// 	},
-	// ],
-
 	comments: [
 		{
 			type: Schema.Types.ObjectId,

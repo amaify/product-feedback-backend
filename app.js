@@ -7,7 +7,12 @@ const feedbackRoutes = require("./routes/feedback");
 
 const app = express();
 
-const MONGODB_URI = `mongodb+srv://amaify:Flowers12%40@product-feedback.zh3f0.mongodb.net/productFeedback?retryWrites=true&w=majority`;
+const DBUsername = process.env.DB_USERNAME;
+const DBPassword = process.env.DB_PASSWORD;
+const DB = process.env.DEFAULT_DB;
+const port = process.env.PORT;
+
+const MONGODB_URI = `mongodb+srv://${DBUsername}:${DBPassword}@product-feedback.zh3f0.mongodb.net/${DB}?retryWrites=true&w=majority`;
 
 app.use(express.json());
 
@@ -36,5 +41,5 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => app.listen(8080))
+	.then(() => app.listen(port || 8080))
 	.catch((err) => console.log(err.message));

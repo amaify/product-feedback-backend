@@ -15,13 +15,11 @@ module.exports = (req, res, next) => {
 	try {
 		decodedToken = jwt.verify(token, "secret");
 	} catch (err) {
-		// console.log(err);
 		req.isAuth = false;
 		return next();
 	}
 
 	if (!decodedToken) {
-		console.log(decodedToken);
 		req.isAuth = false;
 		return next();
 	}

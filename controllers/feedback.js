@@ -102,7 +102,10 @@ exports.incrementUpvotes = async (req, res, next) => {
 		if (!req.isAuth) {
 			return res
 				.status(401)
-				.json({ message: "Not Authorized", statusCode: 401 });
+				.json({
+					message: "You need to be logged In to perform this operation!",
+					statusCode: 401,
+				});
 		}
 
 		const productFeedbackId = req.params.productFeedbackId;
