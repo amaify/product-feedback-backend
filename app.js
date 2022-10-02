@@ -7,12 +7,7 @@ const feedbackRoutes = require("./routes/feedback");
 
 const app = express();
 
-const DBUsername = process.env.DB_USERNAME;
-const DBPassword = process.env.DB_PASSWORD;
-const DB = process.env.DEFAULT_DB;
-const port = process.env.PORT;
-
-const MONGODB_URI = `mongodb+srv://${DBUsername}:${DBPassword}@product-feedback.zh3f0.mongodb.net/${DB}?retryWrites=true&w=majority`;
+const MONGODB_URI = process.env.MONGO_CONNECTION_STRING;
 
 app.use(express.json());
 
@@ -41,5 +36,5 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => app.listen(port || 8080))
+	.then(() => app.listen(process.env.PORT || 8080))
 	.catch((err) => console.log(err.message));
