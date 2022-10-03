@@ -36,5 +36,9 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => app.listen(process.env.PORT || 8080))
+	.then(() =>
+		app.listen(process.env.PORT || 8080, () => {
+			console.log(`Server started on port ${process.env.PORT}`);
+		})
+	)
 	.catch((err) => console.log(err.message));
