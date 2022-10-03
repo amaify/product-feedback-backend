@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const isAuth = require("./middleware/isAuth");
-
 const authRoutes = require("./routes/authentication");
 const feedbackRoutes = require("./routes/feedback");
+require("dotenv").config();
 
 const app = express();
 
