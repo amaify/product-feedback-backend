@@ -21,13 +21,13 @@ exports.newComment = async (req, res, next) => {
 		if (!user) {
 			return res
 				.status(401)
-				.json({ message: "Not Authorized", statusCode: 401 });
+				.json({ message: "Please Login to add a comment!", statusCode: 401 });
 		}
 
 		if (!productFeedback) {
 			return res
 				.status(401)
-				.json({ message: "Product does not exist", statusCode: 401 });
+				.json({ message: "Product Feedback does not exist", statusCode: 401 });
 		}
 
 		let id = 1;
@@ -59,7 +59,6 @@ exports.newComment = async (req, res, next) => {
 			statusCode: 201,
 		});
 	} catch (error) {
-		console.log(error.message);
 		return res.status(400).json({ message: error.message, statusCode: 400 });
 	}
 };

@@ -33,12 +33,7 @@ exports.replyToComment = async (req, res, next) => {
 		}
 
 		const commenterId = comment.creator;
-
 		const commentCreator = await User.findById(commenterId.toString());
-
-		// console.log(commentCreator);
-
-		// console.log(commenterId);
 
 		const createReply = new Replies({
 			content: content,
@@ -62,7 +57,7 @@ exports.replyToComment = async (req, res, next) => {
 			data: createReply,
 		});
 	} catch (error) {
-		console.log(error);
+		return res.status(400).json({ message: error.message, statusCode: 400 });
 	}
 };
 
@@ -129,7 +124,7 @@ exports.replyToReply = async (req, res, next) => {
 			data: createReply,
 		});
 	} catch (error) {
-		console.log(error);
+		return res.status(400).json({ message: error.message, statusCode: 400 });
 	}
 };
 
@@ -160,7 +155,6 @@ exports.getReplies = async (req, res, next) => {
 
 		return res.status(200).json({ data: filteredReplies, statusCode: 200 });
 	} catch (error) {
-		console.log(error.message);
 		return res.status(400).json({ message: error.message, statusCode: 400 });
 	}
 };
