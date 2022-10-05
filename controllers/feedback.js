@@ -163,7 +163,7 @@ exports.editFeedback = async (req, res, next) => {
 				.json({ message: "Product feedback does not exist!", statusCode: 400 });
 		}
 
-		if (user._id.toString() !== editFeedbackId?.creator.toString()) {
+		if (user._id.toString() !== editFeedbackId.creator.toString()) {
 			return res.status(400).json({
 				message: "This feedback can only be edited by the creator!",
 				statusCode: 401,
@@ -187,17 +187,17 @@ exports.editFeedback = async (req, res, next) => {
 		}
 
 		const editedFeedback = new Feedback({
-			_id: editFeedbackId[0]._id,
+			_id: editFeedbackId._id,
 			title: title,
 			category: category,
 			status: status,
 			description: description,
 			upvotes: upvotes,
-			comments: editFeedbackId[0].comments,
+			comments: editFeedbackId.comments,
 		});
 
 		const saveEditedFeedback = await Feedback.updateOne(
-			{ _id: editFeedbackId[0]._id.toString() },
+			{ _id: editFeedbackId._id.toString() },
 			editedFeedback
 		);
 
