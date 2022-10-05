@@ -163,7 +163,7 @@ exports.editFeedback = async (req, res, next) => {
 				.json({ message: "Product feedback does not exist!", statusCode: 400 });
 		}
 
-		if (user._id.toString() !== editFeedbackId[0]?.creator.toString()) {
+		if (user._id.toString() !== editFeedbackId?.creator.toString()) {
 			return res.status(400).json({
 				message: "This feedback can only be edited by the creator!",
 				statusCode: 401,
